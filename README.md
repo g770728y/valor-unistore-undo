@@ -2,6 +2,13 @@
 
 依赖`unistore`
 
+# 如何在`react`组件中使用
+
+在`react`顶级组件中增加一个 commandManager 属性, 绑定`store`
+然后可在外部`ref.commandManager`使用
+
+当然你也可以使用 controller 钩子, 把 commandManager 暴露出去.
+
 # 具体使用方法:
 
 详细参见 `index.test.ts`
