@@ -1,0 +1,24 @@
+{
+  "name": "valor-unistore-undo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "g770728y",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc -w",
+    "test": "jest --watch"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.3"
+  },
+  "files": [
+    "./dist"
+  ],
+  "dependencies": {
+    "unistore": "^3.5.1"
+  }
+}
