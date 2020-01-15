@@ -1,12 +1,19 @@
 import { Store } from "unistore";
 
 export abstract class ICommand<StoreData> {
-  constructor(public store: Store<StoreData>) {}
-  // 第一次执行, 必带参
-  abstract execute: (params?: any) => boolean;
-  // 后面的执行不带参
+  store: Store<StoreData>;
+  params: any;
+  //注意构造方法带参, 这反应了 command 的本质
+  constructor(store: Store<StoreData>, params?: any) {
+    this.store = store;
+    this.params = params || undefined;
+  }
+
+  // 第一次执行
+  abstract execute: () => boolean;
+
+  // undo
   abstract undo: () => void;
-  abstract redo: () => void;
 }
 
 export class CommandManager<StoreData> {
@@ -15,11 +22,13 @@ export class CommandManager<StoreData> {
 
   constructor(public store: Store<StoreData>) {}
 
-  execute = <T extends typeof ICommand>(Command: T, params?: any) => {
-    // @ts-ignore
+  execute = (
+    Command: new (store: Store<StoreData>, params?: any) => ICommand<StoreData>,
+    params?: any
+  ) => {
     const command = new Command(this.store, params);
 
-    if (command.execute(params)) {
+    if (command.execute()) {
       this.undoStack.push(command);
       this.redoStack = [];
     }
@@ -36,7 +45,7 @@ export class CommandManager<StoreData> {
   redo = () => {
     const command = this.redoStack.pop();
     if (command) {
-      command.redo();
+      command.execute();
       this.undoStack.push(command);
     }
   };

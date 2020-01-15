@@ -15,10 +15,6 @@ describe("command-manager", () => {
         store.setState({ a: this.store.getState().a - 1 });
       };
 
-      redo = () => {
-        this._execute();
-      };
-
       _execute = () => {
         store.setState({ a: this.store.getState().a + 1 });
       };
@@ -63,23 +59,17 @@ describe("command-manager", () => {
     const store = createStore<{ a: number }>({ a: 1 });
 
     class Inc_n_Command extends ICommand<{ a: number }> {
-      n: number = 0;
-      execute = (n: number) => {
-        this.n = n;
-        this._execute();
+      constructor(store: any, params: any) {
+        super(store, params);
+      }
+
+      execute = () => {
+        this.store.setState({ a: this.store.getState().a + this.params.n });
         return true;
       };
 
       undo = () => {
-        store.setState({ a: this.store.getState().a - this.n });
-      };
-
-      redo = () => {
-        this._execute();
-      };
-
-      _execute = () => {
-        store.setState({ a: this.store.getState().a + this.n });
+        this.store.setState({ a: this.store.getState().a - this.params.n });
       };
     }
 
@@ -87,7 +77,7 @@ describe("command-manager", () => {
 
     expect(store.getState().a).toEqual(1);
 
-    commandManager.execute(Inc_n_Command as any, 2);
+    commandManager.execute(Inc_n_Command as any, { n: 2 });
 
     expect(store.getState().a).toEqual(3);
     expect(commandManager.undoStack.length).toEqual(1);
