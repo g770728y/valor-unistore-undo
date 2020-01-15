@@ -3,6 +3,8 @@ import { Store } from "unistore";
 export abstract class ICommand<StoreData> {
   store: Store<StoreData>;
   params: any;
+  undoContext: { style: any } = {} as any;
+
   //注意构造方法带参, 这反应了 command 的本质
   constructor(store: Store<StoreData>, params?: any) {
     this.store = store;

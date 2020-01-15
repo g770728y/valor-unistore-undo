@@ -19,21 +19,20 @@
 
     class Inc_n_Command extends ICommand<{ a: number }> {
       n: number = 0;
-      execute = (n: number) => {
-        this.n = n;
-        this._execute();
+      constructor(store, params) {
+        super(store, params);
+      }
+
+      execute = () => {
+        this.do();
       };
 
       undo = () => {
-        store.setState({ a: this.store.getState().a - this.n });
+        store.setState({ a: this.store.getState().a - this.params.n });
       };
 
-      redo = () => {
-        this._execute();
-      };
-
-      _execute = () => {
-        store.setState({ a: this.store.getState().a + this.n });
+      do = () => {
+        store.setState({ a: this.store.getState().a + this.params.n });
       };
     }
 
