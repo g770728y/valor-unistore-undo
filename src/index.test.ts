@@ -8,6 +8,7 @@ describe("command-manager", () => {
     class IncCommand extends ICommand<{ a: number }> {
       execute = () => {
         this._execute();
+        return true;
       };
 
       undo = () => {
@@ -66,6 +67,7 @@ describe("command-manager", () => {
       execute = (n: number) => {
         this.n = n;
         this._execute();
+        return true;
       };
 
       undo = () => {

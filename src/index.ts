@@ -3,10 +3,10 @@ import { Store } from "unistore";
 export abstract class ICommand<StoreData> {
   constructor(public store: Store<StoreData>) {}
   // 第一次执行, 必带参
-  abstract execute: (params?: any) => any;
+  abstract execute: (params?: any) => boolean;
   // 后面的执行不带参
-  abstract undo: () => any;
-  abstract redo: () => any;
+  abstract undo: () => void;
+  abstract redo: () => void;
 }
 
 export class CommandManager<StoreData> {
@@ -19,10 +19,10 @@ export class CommandManager<StoreData> {
     // @ts-ignore
     const command = new Command(this.store, params);
 
-    const patch = command.execute(params);
-    this.store.setState(patch);
-    this.undoStack.push(command);
-    this.redoStack = [];
+    if (command.execute(params)) {
+      this.undoStack.push(command);
+      this.redoStack = [];
+    }
   };
 
   undo = () => {

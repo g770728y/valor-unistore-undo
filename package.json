@@ -1,7 +1,7 @@
 {
   "name": "valor-unistore-undo",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.2",
+  "main": "dist/index.js",
   "author": "g770728y",
   "license": "MIT",
   "scripts": {
@@ -16,7 +16,7 @@
     "typescript": "^3.5.3"
   },
   "files": [
-    "./dist"
+    "dist"
   ],
   "dependencies": {
     "unistore": "^3.5.1"
